@@ -1,4 +1,3 @@
-#include "Motors.cpp"
 /*
 пины микроконтроллера отвечающие за направление движения
 1 - назад, 0 - вперёд
@@ -7,7 +6,7 @@
 #define MOTOR_RIGHT_DIR		7	
 
 #define FORWARD	  LOW  //для более осмысленного переключения между направлениями движения, Пример: digitalWrite(MOTOR_LEFT_DIR,FORWARD); //установка левого мотора на движение в перёд
-#define BACKWARD	HIGH
+#define BACKWARD	  HIGH
 
 /*
 пины микроконтроллера отвечающие за питание моторов
