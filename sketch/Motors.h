@@ -6,8 +6,8 @@
 #define MOTOR_LEFT_DIR		4 
 #define MOTOR_RIGHT_DIR		7	
 
-#define MOTOR_DIR_FORWARD	LOW
-#define MOTOR_DIR_BACK		HIGH
+#define FORWARD	  LOW  //для более осмысленного переключения между направлениями движения, Пример: digitalWrite(MOTOR_LEFT_DIR,FORWARD); //установка левого мотора на движение в перёд
+#define BACKWARD	HIGH
 
 /*
 пины микроконтроллера отвечающие за питание моторов
