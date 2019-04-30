@@ -2,7 +2,7 @@
 
 #include <FastPID.h>
 
-
+#include "Motors.h"
 
 float Kp=0.1, Ki=0.5, Kd=0, Hz=10;
 int output_bits = 8;
@@ -22,5 +22,3 @@ void loop()
   uint8_t output = myPID.step(setpoint, feedback);
 }
    
-
-
