@@ -5,7 +5,7 @@
 #define MOTOR_LEFT_DIR		4 
 #define MOTOR_RIGHT_DIR		7	
 
-#define FORWARD	  LOW  //для более осмысленного переключения между направлениями движения, Пример: digitalWrite(MOTOR_LEFT_DIR,FORWARD); //установка левого мотора на движение в перёд
+#define FORWARD	    LOW  //для более осмысленного переключения между направлениями движения, Пример: digitalWrite(MOTOR_LEFT_DIR,FORWARD); //установка левого мотора на движение в перёд
 #define BACKWARD	  HIGH
 
 /*
@@ -13,3 +13,10 @@
 */
 #define MOTOR_LEFT_POW		5 //питание моторов
 #define MOTOR_RIGHT_POW		6
+
+#define NORMAL_SPEED      40 //скорость
+
+void setMotorDirForward();
+void setMotorDir(int lDir,int rDir);
+void setMotorPWM(int lPower,int rPower);
+void setMotorPWMPID(int Power,int PID);

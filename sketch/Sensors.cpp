@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "Sensors.h"
 
-float sensorsFeedBack(int* sensors)
+int sensorsFeedBack(int* sensors)
 {
 	if(sensors[SENTRAL] <= BLACK)
 	{
@@ -29,9 +29,9 @@ float sensorsFeedBack(int* sensors)
 
 void sensorsRead(int* sensors)
 {
-	sensors[RIGHT] = analogRead(READ_RIGHT);
-	sensors[LEFT] = analogRead(READ_LEFT);
-	sensors[SENTRAL] = analogRead(READ_SENTRAL);
+	sensors[RIGHT] = (analogRead(READ_RIGHT)>>1);       // >>1 деление на два
+	sensors[LEFT] = (analogRead(READ_LEFT)>>1);         
+	sensors[SENTRAL] = (analogRead(READ_SENTRAL)>>1);   
 }
 
 bool isAllSensorsWhite(int* sensors)
@@ -67,5 +67,4 @@ bool isAllSensorsBlack(int* sensors)
 		return false;
 	}
 	return true;
-	
 }
