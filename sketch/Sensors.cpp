@@ -3,7 +3,7 @@
 
 int sensorsFeedBack(int* sensors)
 {
-	if(sensors[SENTRAL] <= BLACK)
+	if(sensors[SENTRAL] >= GRAY)
 	{
 		if(sensors[RIGHT] > sensors[LEFT])
 		{
@@ -16,22 +16,22 @@ int sensorsFeedBack(int* sensors)
 	}
 	else
 	{
-		if(sensors[RIGHT] > sensors[LEFT])
-		{
-			return sensors[RIGHT];
-		}
-		else
-		{
-			return -sensors[LEFT];
-		}
+		//if(sensors[RIGHT] > sensors[LEFT])
+		//{
+			return -sensors[RIGHT]+sensors[LEFT];
+		//}
+		//else
+		//{
+		//	return sensors[LEFT]-sensors[RIGHT];
+		//}
 	}
 }
 
 void sensorsRead(int* sensors)
 {
-	sensors[RIGHT] = (analogRead(READ_RIGHT)>>1);       // >>1 деление на два
-	sensors[LEFT] = (analogRead(READ_LEFT)>>1);         
-	sensors[SENTRAL] = (analogRead(READ_SENTRAL)>>1);   
+  	sensors[RIGHT] = (analogRead(2)>>1);       
+  	sensors[LEFT] = (analogRead(5)>>1);         
+  	sensors[SENTRAL] = 20;//(analogRead(READ_SENTRAL)>>1);   
 }
 
 bool isAllSensorsWhite(int* sensors)
@@ -54,15 +54,15 @@ bool isAllSensorsWhite(int* sensors)
 
 bool isAllSensorsBlack(int* sensors)
 {
-	if(sensors[SENTRAL] >= GRAY)
+	if(sensors[SENTRAL] >= BLACK)
 	{
 		return false;
 	}
-	if(sensors[RIGHT] >= GRAY)
+	if(sensors[RIGHT] >= BLACK)
 	{
 		return false;
 	}
-	if(sensors[LEFT] >= GRAY)
+	if(sensors[LEFT] >= BLACK)
 	{
 		return false;
 	}

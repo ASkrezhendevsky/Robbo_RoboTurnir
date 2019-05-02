@@ -6,6 +6,11 @@ void setMotorDirForward()
     setMotorDir(FORWARD,FORWARD);
 }
 
+void setMotorDirBackward()
+{
+    setMotorDir(BACKWARD,BACKWARD);
+}
+
 void setMotorDir(int lDir,int rDir)
 {
     digitalWrite(MOTOR_LEFT_DIR,lDir);
@@ -20,9 +25,28 @@ void setMotorPWM(int lPower,int rPower)
 
 void setMotorPWMPID(int Power,int PID)
 {
-    int left = Power+PID; // 0 <= pid <= 127 обязательно!!!! 
-    int right = Power-PID;
+    int left = Power-PID; // 0 <= pid <= 127 обязательно!!!! 
+    int right = Power+PID;
+
     if(left < 0)
+    {
+        left = 0;
+    } 
+
+    if(right < 0)
+    {        
+        right = 0;
+    } 
+    if(left > 255)
+    {
+        left = 255;
+    } 
+
+    if(right > 255)
+    {
+        right = 255;
+    }
+    /*if(left < 0)
     {
         right = right - left;
         left = 0;
@@ -44,7 +68,7 @@ void setMotorPWMPID(int Power,int PID)
     {
         left = left - (right - 255);
         right = 255;
-    } 
+    } */
 
     setMotorPWM(left, right);
 }
