@@ -16,14 +16,7 @@ int sensorsFeedBack(int* sensors)
 	}
 	else
 	{
-		//if(sensors[RIGHT] > sensors[LEFT])
-		//{
 			return -sensors[RIGHT]+sensors[LEFT];
-		//}
-		//else
-		//{
-		//	return sensors[LEFT]-sensors[RIGHT];
-		//}
 	}
 }
 

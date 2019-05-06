@@ -71,7 +71,7 @@ byte moveAlongLine()
     {
        // return STATE_CROSSROAD;
     }
-    setMotorPWMPID(NORMAL_SPEED,(myPID.step(512, sensorsFeedBack(sensors)+512)));  // >>1 деление на два
+    setMotorPWMPID(NORMAL_SPEED,(myPID.step(MAX_ERR, sensorsFeedBack(sensors)+MAX_ERR))); 
     return STATE_LINE;
 }
 
