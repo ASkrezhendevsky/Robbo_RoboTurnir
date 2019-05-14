@@ -3,9 +3,12 @@
 #define RIGHT	        2
 #define MAX_SENSORS   3
 
-#define WHITE	  400
-#define GRAY	  250
-#define BLACK	  100
+#define MAX_WHITE     180
+#define WHITE	        160
+#define BRIGHT_GRAY   130
+#define GRAY	        100
+#define DARK_GRAY     55
+#define BLACK	        50
 
 #define READ_SENTRAL	1
 #define READ_LEFT		  5

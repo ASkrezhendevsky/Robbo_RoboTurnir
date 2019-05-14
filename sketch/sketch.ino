@@ -9,7 +9,10 @@
 #define STATE_CROSSROAD   3 //движение по перекрёстку
 #define STATE_FINDING     4 //поиск ступенек
 
-float Kp=0.46, Ki=0.36, Kd=1.3, Hz=1000;
+#define START 14
+
+float Kp=0.92, Ki=0.72, Kd=2.6, Hz=1000;
+//float Kp=1.92, Ki=0.0, Kd=0.0, Hz=1000;
 int output_bits = 8;
 bool output_signed = true;
 FastPID myPID(Kp, Ki, Kd, Hz, output_bits, output_signed);
@@ -20,15 +23,22 @@ int sensors[MAX_SENSORS];
 
 void setup()
 {
+    Kp = Kp*NORMAL_SPEED/150;
+    Ki = Ki*NORMAL_SPEED/150;
+    Kd = Kd*NORMAL_SPEED/150;
     pinMode(MOTOR_LEFT_DIR,OUTPUT);
     pinMode(MOTOR_RIGHT_DIR,OUTPUT);
     pinMode(MOTOR_LEFT_POW,OUTPUT);
     pinMode(MOTOR_RIGHT_POW,OUTPUT);
+    pinMode(START,INPUT);
 
     Serial.begin(9600);
     setMotorDirForward();
-    delay(1000);
     setMotorPWM(0,0);
+    while(digitalRead(START) == HIGH)
+    {
+    }
+    delay(1000);
 }
 
 void loop()
@@ -38,12 +48,26 @@ void loop()
     int feedback = 512;
     uint8_t output = myPID.step(setpoint, feedback);
   */
-   /* sensorsRead(sensors);
-    Serial.print("sensorsFeedBack = ");
-    Serial.println(sensorsFeedBack(sensors)+512);
+ /*
+    sensorsRead(sensors);
+    Serial.print(" sensorsFeedBack = ");
+    Serial.print(sensorsFeedBack(sensors));
+    Serial.print(" sensors[0] = ");
+    Serial.print(sensors[0]);
+    Serial.print(" sensors[1] = ");
+    Serial.print(sensors[1]);
+    Serial.print(" sensors[2] = ");
+    Serial.println(sensors[2]);
+    
+    /*
     Serial.print("myPID = ");
     Serial.println(myPID.step(512, sensorsFeedBack(sensors)+512));
     delay(100);//*/
+
+
+
+    
+    //*
     sensorsRead(sensors);
 
     switch(state)
@@ -57,7 +81,7 @@ void loop()
         case STATE_CROSSROAD:
             state = moveCrossroad();
         break;
-    }
+    }//*/
     
 }
 
@@ -65,7 +89,7 @@ byte moveAlongLine()
 {
     if(isAllSensorsWhite(sensors))
     {
-       // return STATE_DASH;
+        return STATE_DASH;
     }
     if(isAllSensorsBlack(sensors))
     {

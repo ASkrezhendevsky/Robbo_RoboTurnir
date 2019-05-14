@@ -3,20 +3,20 @@
 
 int sensorsFeedBack(int* sensors)
 {
-	if(sensors[SENTRAL] >= GRAY)
-	{
-		if(sensors[RIGHT] > sensors[LEFT])
-		{
-			return MAX_ERR - sensors[RIGHT];
-		}
-		else
-		{
-			return - MAX_ERR + sensors[LEFT];
-		}
+	if(sensors[SENTRAL] <= GRAY && sensors[LEFT] > DARK_GRAY && sensors[RIGHT] > DARK_GRAY)
+	{    
+      return -sensors[RIGHT]+sensors[LEFT];
 	}
 	else
 	{
-			return -sensors[RIGHT]+sensors[LEFT];
+      if(sensors[RIGHT] < sensors[LEFT])
+      {
+          return MAX_WHITE +  MAX_WHITE +sensors[RIGHT] - sensors[LEFT];
+      }
+      else
+      {
+          return -MAX_WHITE- MAX_WHITE+ sensors[RIGHT] - sensors[LEFT];
+      }
 	}
 }
 
@@ -24,20 +24,20 @@ void sensorsRead(int* sensors)
 {
   	sensors[RIGHT] = (analogRead(2)>>1);       
   	sensors[LEFT] = (analogRead(5)>>1);         
-  	sensors[SENTRAL] = 20;//(analogRead(READ_SENTRAL)>>1);   
+  	sensors[SENTRAL] = (analogRead(1)>>1);   
 }
 
 bool isAllSensorsWhite(int* sensors)
 {
-	if(sensors[SENTRAL] <= GRAY)
+	if(sensors[SENTRAL] <= WHITE)
 	{
 		return false;
 	}
-	if(sensors[RIGHT] <= GRAY)
+	if(sensors[RIGHT] <= WHITE)
 	{
 		return false;
 	}
-	if(sensors[LEFT] <= GRAY)
+	if(sensors[LEFT] <= WHITE)
 	{
 		return false;
 	}
