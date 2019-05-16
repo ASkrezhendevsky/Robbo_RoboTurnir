@@ -13,7 +13,7 @@
 
 float Kp=0.92, Ki=0.72, Kd=2.6, Hz=1000;
 //float Kp=1.92, Ki=0.0, Kd=0.0, Hz=1000;
-int output_bits = 8;
+int output_bits = 16;
 bool output_signed = true;
 FastPID myPID(Kp, Ki, Kd, Hz, output_bits, output_signed);
 
@@ -57,12 +57,22 @@ void loop()
     Serial.print(" sensors[1] = ");
     Serial.print(sensors[1]);
     Serial.print(" sensors[2] = ");
-    Serial.println(sensors[2]);
+    Serial.println(sensors[2]);//*/
     
     /*
-    Serial.print("myPID = ");
-    Serial.println(myPID.step(512, sensorsFeedBack(sensors)+512));
-    delay(100);//*/
+    sensorsRead(sensors);
+    int feedback = sensorsFeedBack(sensors);
+    Serial.print(" sensorsFeedBack = ");
+    Serial.print(feedback);
+    Serial.print(" sensors[0] = ");
+    Serial.print(sensors[0]);
+    Serial.print(" sensors[1] = ");
+    Serial.print(sensors[1]);
+    Serial.print(" sensors[2] = ");
+    Serial.print(sensors[2]);
+    Serial.print(" myPID = ");
+    Serial.println(myPID.step(MAX_ERR, feedback+MAX_ERR));
+    //delay(100);//*/
 
 
 
