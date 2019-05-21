@@ -3,61 +3,60 @@
 
 int sensorsFeedBack(int* sensors)
 {
-	if(sensors[SENTRAL] <= GRAY && sensors[LEFT] > DARK_GRAY && sensors[RIGHT] > DARK_GRAY)
+  
+  return -sensors[S_RIGHT]+sensors[LEFT];
+
+  
+	if(sensors[SENTRAL] >= GRAY && sensors[S_LEFT] < DARK_GRAY && sensors[S_RIGHT] < DARK_GRAY)
 	{    
-      return -sensors[RIGHT]+sensors[LEFT];
+      return -sensors[S_RIGHT]+sensors[LEFT];
 	}
 	else
 	{
-      if(sensors[RIGHT] < sensors[LEFT])
+      if(sensors[S_RIGHT] < sensors[S_LEFT])
       {
-          return MAX_WHITE +  MAX_WHITE +sensors[RIGHT] - sensors[LEFT];
+          return MAX_SENS_VAL +  MAX_SENS_VAL +sensors[S_RIGHT] - sensors[S_LEFT];
       }
       else
       {
-          return -MAX_WHITE- MAX_WHITE+ sensors[RIGHT] - sensors[LEFT];
+          return -MAX_SENS_VAL- MAX_SENS_VAL+ sensors[S_RIGHT] - sensors[S_LEFT];
       }
 	}
+  
 }
 
 void sensorsRead(int* sensors)
-{
-  	sensors[RIGHT] = (analogRead(2)>>1);       
-  	sensors[LEFT] = (analogRead(5)>>1);         
-  	sensors[SENTRAL] = (analogRead(1)>>1);   
+{      
+    sensors[S_LEFT] =   (analogRead(1)>>1);        
+  	sensors[LEFT] =     (analogRead(2)>>1);         
+  	sensors[SENTRAL] =  (analogRead(3)>>1);  
+    sensors[S_RIGHT] =  (analogRead(4)>>1);  
+    sensors[RIGHT] =    (analogRead(5)>>1);  
 }
 
 bool isAllSensorsWhite(int* sensors)
 {
-	if(sensors[SENTRAL] <= WHITE)
-	{
-		return false;
-	}
-	if(sensors[RIGHT] <= WHITE)
-	{
-		return false;
-	}
-	if(sensors[LEFT] <= WHITE)
-	{
-		return false;
-	}
+  byte i = 0; 
+  for(i = 0;i < MAX_SENSORS;i++)
+  {
+      if(sensors[i] >= WHITE)
+      {
+          return false;
+      }
+  }
 	return true;
 	
 }
 
 bool isAllSensorsBlack(int* sensors)
 {
-	if(sensors[SENTRAL] >= BLACK)
-	{
-		return false;
-	}
-	if(sensors[RIGHT] >= BLACK)
-	{
-		return false;
-	}
-	if(sensors[LEFT] >= BLACK)
-	{
-		return false;
-	}
-	return true;
+	byte i = 0; 
+  for(i = 0;i < MAX_SENSORS;i++)
+  {
+      if(sensors[i] <= BLACK)
+      {
+          return false;
+      }
+  }
+  return true;
 }

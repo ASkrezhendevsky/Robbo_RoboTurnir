@@ -70,6 +70,10 @@ void loop()
     Serial.print(sensors[1]);
     Serial.print(" sensors[2] = ");
     Serial.print(sensors[2]);
+    Serial.print(" sensors[3] = ");
+    Serial.print(sensors[3]);
+    Serial.print(" sensors[4] = ");
+    Serial.print(sensors[4]);
     Serial.print(" myPID = ");
     Serial.println(myPID.step(MAX_ERR, feedback+MAX_ERR));
     //delay(100);//*/
