@@ -22,3 +22,5 @@ void setMotorDirBackward();
 void setMotorDir(int lDir,int rDir);
 void setMotorPWM(int lPower,int rPower);
 void setMotorPWMPID(int Power,int PID);
+void setMotorBreakL();
+void setMotorBreakR();
