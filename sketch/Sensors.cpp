@@ -4,7 +4,7 @@
 int sensorsFeedBack(byte* sensors)
 {
 
-  if(sensors[SENTRAL] >= 20 && sensors[LEFT] < 30 && sensors[RIGHT] < 30)
+  if(sensors[SENTRAL] >= 10 && sensors[LEFT] < 30 && sensors[RIGHT] < 30)
   {    
       Serial.print(1);
       return -sensors[S_RIGHT]+sensors[S_LEFT];
@@ -15,19 +15,32 @@ int sensorsFeedBack(byte* sensors)
       {
         
           Serial.print(2);
-          return MAX_SENS_VAL +  MAX_SENS_VAL +sensors[S_RIGHT] - sensors[S_LEFT];
+          return MAX_SENS_VAL +  MAX_SENS_VAL + sensors[S_RIGHT] - sensors[S_LEFT];
         
       }
       else
       {
         
           Serial.print(3);
-          return -MAX_SENS_VAL - MAX_SENS_VAL+ sensors[S_RIGHT] - sensors[S_LEFT];
+          return -MAX_SENS_VAL - MAX_SENS_VAL + sensors[S_RIGHT] - sensors[S_LEFT];
         
       }
   }
-  Serial.print(4);
-  return -sensors[RIGHT] +   sensors[LEFT];
+  if(sensors[RIGHT] < sensors[LEFT])
+  {
+    
+      Serial.print(4);
+      return MAX_SENS_VAL -sensors[RIGHT] +   sensors[LEFT];
+    
+  }
+  else
+  {
+    
+      Serial.print(5);
+      return -MAX_SENS_VAL -sensors[RIGHT] +   sensors[LEFT];
+    
+  }
+  //return -sensors[RIGHT] +   sensors[LEFT];
   
   
  /*

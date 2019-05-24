@@ -42,25 +42,32 @@ void setMotorPWMPID(int Power,int PID)
 
     if(left <= 0)
     {
-        left = 0;
+        setMotorBreakL();
+       // left = 255;
+    }
+    else
+    {
+        digitalWrite(MOTOR_LEFT_DIR,FORWARD);
+        if(left > 255)
+        {
+            left = 255;
+        } 
+        analogWrite(MOTOR_LEFT_POW,left);
     }
 
     if(right <= 0)
     {        
-        right = 0;
+        setMotorBreakR();
+       // right = 255;
     } 
-    
-    if(left > 255)
+    else
     {
-        left = 255;
-    } 
-
-    if(right > 255)
-    {
-        right = 255;
+        digitalWrite(MOTOR_RIGHT_DIR,FORWARD);
+        if(right > 255)
+        {
+            right = 255;
+        }
+        analogWrite(MOTOR_RIGHT_POW,right);
     }
-
-
-    
-    setMotorPWM(left, right);
+   // setMotorPWM(left, right);
 }

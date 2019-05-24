@@ -11,10 +11,10 @@
 
 #define START 14
 
-//float Kp=0.42, Ki=3.92, Kd=12.9, Hz=100000;
-float Kp=2.22, Ki=1.8, Kd=1.8, Hz=1000;
+//float Kp=3.1, Ki=0.0, Kd=0.0, Hz=1000;
 
-//float Kp=1.92, Ki=0.0, Kd=0.0, Hz=1000;
+float Kp=3.1, Ki=0.0, Kd=0.0, Hz=1000;
+
 int output_bits = 16;
 bool output_signed = true;
 FastPID myPID(Kp, Ki, Kd, Hz, output_bits, output_signed);
@@ -25,7 +25,7 @@ byte sensors[MAX_SENSORS];
 byte sensorsL[MAX_SENSORS];
 byte sensorsM[MAX_SENSORS];
 byte sensorsH[MAX_SENSORS];
-int counter =0;
+int counter = 0;
 int i;
 
 byte normalL[MAX_VAL];
@@ -62,10 +62,10 @@ void setup()
         Serial.println(sensors[i]);
     }
 
-    Serial.println("Step 1 Finish");
+    //Serial.println("Step 1 Finish");
 
 
-    
+    /*
     while(digitalRead(START) == HIGH)
     {
     }
@@ -77,7 +77,7 @@ void setup()
         Serial.println(sensors[i]);
     }
 
-    Serial.println("Step 2 Finish");
+    Serial.println("Step 2 Finish");*/
 
 
     
@@ -93,23 +93,20 @@ void setup()
     }
 
     
+    /*
     Serial.print(sensorsL[0]); 
     Serial.print("  ");
     Serial.print(sensorsM[0]);
     Serial.print("  ");
     Serial.print(sensorsH[0]);
-    Serial.print("  ");
+    Serial.print("  ");//*/
     generateNormal(normalL, LEFT, sensorsL[LEFT],sensorsM[LEFT],sensorsH[LEFT]);
-    for(i = 0; i < MAX_VAL;i++)
-    {
-        Serial.println(normalL[i]);
-    }
     generateNormal(normalSL, S_LEFT, sensorsL[S_LEFT],sensorsM[S_LEFT],sensorsH[S_LEFT]);
     generateNormal(normalS, SENTRAL, sensorsL[SENTRAL],sensorsM[SENTRAL],sensorsH[SENTRAL]);
     generateNormal(normalSR, S_RIGHT, sensorsL[S_RIGHT],sensorsM[S_RIGHT],sensorsH[S_RIGHT]);
     generateNormal(normalR, RIGHT, sensorsL[RIGHT],sensorsM[RIGHT],sensorsH[RIGHT]);
 
-    Serial.println("Step 3 Finish");
+    //Serial.println("Step 3 Finish");
     
     while(digitalRead(START) == HIGH)
     {
@@ -139,8 +136,8 @@ void loop()
     Serial.println(sensors[2]);//*/
     
     /*
-    //sensorsRead2(sensors);
-    sensorsRead2(sensors, normalL, normalSL, normalS, normalSR, normalR);
+    sensorsRead(sensors);
+   // sensorsRead2(sensors, normalL, normalSL, normalS, normalSR, normalR);
     int feedback = sensorsFeedBack(sensors);
     Serial.print(" sensorsFeedBack = ");
     Serial.print(feedback);
@@ -198,7 +195,7 @@ byte moveAlongLine()
     }
     if(isAllSensorsBlack(sensors))
     {
-       // return STATE_CROSSROAD;
+        return STATE_CROSSROAD;
     }
     setMotorPWMPID(NORMAL_SPEED,(myPID.step(MAX_ERR, sensorsFeedBack(sensors)+MAX_ERR))); 
     return STATE_LINE;
@@ -218,9 +215,9 @@ byte moveCrossroad()
 {
     if(!isAllSensorsBlack(sensors))
     {
-        return STATE_CROSSROAD;
+        return STATE_LINE;
     }
-    setMotorPWM(NORMAL_SPEED,NORMAL_SPEED);
+    setMotorPWMPID(NORMAL_SPEED,(myPID.step(MAX_ERR, MAX_ERR))); 
     return STATE_CROSSROAD;
 }
 
