@@ -1,3 +1,4 @@
+#include <EEPROM.h>
 #include <FastPID.h>
 
 #include "Motors.h"
@@ -11,10 +12,12 @@
 
 #define START 14
 
-//float Kp=3.1, Ki=0.0, Kd=0.0, Hz=1000;
-
-float Kp=3.1, Ki=0.0, Kd=0.0, Hz=1000;
-
+//float Kp=3.1, Ki=0.0, Kd=0.0, Hz=1000;// <-- РАБОЧЕЕ!  // скор - 200, разр крона 7.3 в
+//float Kp=3.1, Ki=3.9, Kd=2.6, Hz=1000; //<-- РАБОЧЕЕ!  // скор - 200, разр крона 7.3 в
+//float Kp=3.0, Ki=4.3, Kd=2.6, Hz=1000; // <-- РАБОЧЕЕ!  // скор - 210, разр крона 7.3 в ***** проходит ступени, не проходит крутой поворот в пуктир
+//float Kp=2.9, Ki=4.0, Kd=2.0, Hz=1000;// <-- РАБОЧЕЕ!  // скор - 210, разр крона 7.3 в ***** проходит всё
+//float Kp=2.9, Ki=4.0, Kd=2.0, Hz=1000;// <-- РАБОЧЕЕ!  // скор - 255, разр крона < 7.3 в ***** проходит всё, экранирование на: Л св, СЛ фототранзистор, С св, Р развендены в стороны
+float Kp = 2.2, Ki = 3.8, Kd=2.0, Hz=1000; // ?????  
 int output_bits = 16;
 bool output_signed = true;
 FastPID myPID(Kp, Ki, Kd, Hz, output_bits, output_signed);
@@ -50,69 +53,81 @@ void setup()
     setMotorPWM(0,0);
 
 
-    
-    while(digitalRead(START) == HIGH)
-    {
-    }
-    delay(400);
-    sensorsRead(sensors);
-    for(i = 0; i < MAX_SENSORS;i++)
-    {
-        sensorsL[i] = sensors[i];
-        Serial.println(sensors[i]);
-    }
 
-    //Serial.println("Step 1 Finish");
-
-
-    /*
-    while(digitalRead(START) == HIGH)
-    {
-    }
-    delay(400);
-    sensorsRead(sensors);
-    for(i = 0; i < MAX_SENSORS;i++)
-    {
-        sensorsM[i] = sensors[i];
-        Serial.println(sensors[i]);
-    }
-
-    Serial.println("Step 2 Finish");*/
-
-
-    
-    while(digitalRead(START) == HIGH)
-    {
-    }
-    delay(400);
-    sensorsRead(sensors);
-    for(i = 0; i < MAX_SENSORS;i++)
-    {
-        sensorsH[i] = sensors[i];
-        Serial.println(sensors[i]);
-    }
-
-    
-    /*
-    Serial.print(sensorsL[0]); 
-    Serial.print("  ");
-    Serial.print(sensorsM[0]);
-    Serial.print("  ");
-    Serial.print(sensorsH[0]);
-    Serial.print("  ");//*/
-    generateNormal(normalL, LEFT, sensorsL[LEFT],sensorsM[LEFT],sensorsH[LEFT]);
-    generateNormal(normalSL, S_LEFT, sensorsL[S_LEFT],sensorsM[S_LEFT],sensorsH[S_LEFT]);
-    generateNormal(normalS, SENTRAL, sensorsL[SENTRAL],sensorsM[SENTRAL],sensorsH[SENTRAL]);
-    generateNormal(normalSR, S_RIGHT, sensorsL[S_RIGHT],sensorsM[S_RIGHT],sensorsH[S_RIGHT]);
-    generateNormal(normalR, RIGHT, sensorsL[RIGHT],sensorsM[RIGHT],sensorsH[RIGHT]);
-
-    //Serial.println("Step 3 Finish");
     
     while(digitalRead(START) == HIGH)
     {
     }
     delay(1000);
-
+    if(digitalRead(START) == LOW)
+    {
+      readNormal(normalL,normalSL,normalS,normalSR,normalR);
+      while(digitalRead(START) == LOW)
+      {
+          delay(15);
+      }
+    }
+    else
+    {
+        sensorsRead(sensors);
+        for(i = 0; i < MAX_SENSORS;i++)
+        {
+            sensorsL[i] = sensors[i];
+            Serial.println(sensors[i]);
+        }
+    
+        //Serial.println("Step 1 Finish");
+    
+    
+        /*
+        while(digitalRead(START) == HIGH)
+        {
+        }
+        delay(400);
+        sensorsRead(sensors);
+        for(i = 0; i < MAX_SENSORS;i++)
+        {
+            sensorsM[i] = sensors[i];
+            Serial.println(sensors[i]);
+        }
+    
+        Serial.println("Step 2 Finish");*/
+    
+    
+        
+        while(digitalRead(START) == HIGH)
+        {
+        }
+        delay(400);
+        sensorsRead(sensors);
+        for(i = 0; i < MAX_SENSORS;i++)
+        {
+            sensorsH[i] = sensors[i];
+            Serial.println(sensors[i]);
+        }
+    
+        
+        /*
+        Serial.print(sensorsL[0]); 
+        Serial.print("  ");
+        Serial.print(sensorsM[0]);
+        Serial.print("  ");
+        Serial.print(sensorsH[0]);
+        Serial.print("  ");//*/
+        generateNormal(normalL, LEFT, sensorsL[LEFT],sensorsM[LEFT],sensorsH[LEFT]);
+        generateNormal(normalSL, S_LEFT, sensorsL[S_LEFT],sensorsM[S_LEFT],sensorsH[S_LEFT]);
+        generateNormal(normalS, SENTRAL, sensorsL[SENTRAL],sensorsM[SENTRAL],sensorsH[SENTRAL]);
+        generateNormal(normalSR, S_RIGHT, sensorsL[S_RIGHT],sensorsM[S_RIGHT],sensorsH[S_RIGHT]);
+        generateNormal(normalR, RIGHT, sensorsL[RIGHT],sensorsM[RIGHT],sensorsH[RIGHT]);
+        //Serial.println("Step 3 Finish");
+        writeNormal(normalL,normalSL,normalS,normalSR,normalR);
+        while(digitalRead(START) == HIGH)
+        {
+        }
+        
+    }
+    
+    delay(2000);
     
     
 }
@@ -219,6 +234,57 @@ byte moveCrossroad()
     }
     setMotorPWMPID(NORMAL_SPEED,(myPID.step(MAX_ERR, MAX_ERR))); 
     return STATE_CROSSROAD;
+}
+
+void readNormal(byte *normalL,byte *normalSL,byte *normalS,byte *normalSR,byte *normalR)
+{
+    int i;
+    for(i = 0; i < MAX_VAL; i++)
+    {
+        normalL[i] = EEPROM.read(i);
+    }
+    for(i = 0; i < MAX_VAL; i++)
+    {
+        normalSL[i] = EEPROM.read(i + MAX_VAL);
+    }
+     for(i = 0; i < MAX_VAL; i++)
+    {
+        normalS[i] = EEPROM.read(i + 2*MAX_VAL);
+    }
+    for(i = 0; i < MAX_VAL; i++)
+    {
+        normalSR[i] = EEPROM.read(i + 3*MAX_VAL);
+    }
+    for(i = 0; i < MAX_VAL; i++)
+    {
+        normalR[i] = EEPROM.read(i + 4*MAX_VAL);
+    }
+}
+
+void writeNormal(byte *normalL,byte *normalSL,byte *normalS,byte *normalSR,byte *normalR)
+{
+    int i;
+    for(i = 0; i < MAX_VAL; i++)
+    {
+        EEPROM.write(i,normalL[i]);
+    }
+    for(i = 0; i < MAX_VAL; i++)
+    {
+        EEPROM.write(i + 1*MAX_VAL,normalSL[i]);
+    }
+
+    for(i = 0; i < MAX_VAL; i++)
+    {
+        EEPROM.write(i + 2*MAX_VAL,normalS[i]);
+    }
+    for(i = 0; i < MAX_VAL; i++)
+    {
+        EEPROM.write(i + 3*MAX_VAL,normalSR[i + 3*MAX_VAL]);
+    }
+    for(i = 0; i < MAX_VAL; i++)
+    {
+        EEPROM.write(i + 4*MAX_VAL,normalR[i + 4*MAX_VAL]);
+    }
 }
 
 

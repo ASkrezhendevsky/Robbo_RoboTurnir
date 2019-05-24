@@ -15,7 +15,7 @@
 #define MOTOR_LEFT_POW		9 //питание моторов
 #define MOTOR_RIGHT_POW		5
 
-#define NORMAL_SPEED      200 //скорость
+#define NORMAL_SPEED      255 //скорость
 
 void setMotorDirForward();
 void setMotorDirBackward();
