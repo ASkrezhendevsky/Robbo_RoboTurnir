@@ -85,8 +85,8 @@ int sensorsFeedBack(byte* sensors)
 
 void sensorsRead(byte* sensors)
 {      
-    sensors[LEFT] =   (analogRead(1)>>4);        
-  	sensors[S_LEFT] =     (analogRead(2)>>4);         
+    sensors[LEFT] =     (analogRead(1)>>4);        
+  	sensors[S_LEFT] =   (analogRead(2)>>4);         
   	sensors[SENTRAL] =  (analogRead(3)>>4);  
     sensors[S_RIGHT] =  (analogRead(4)>>4);  
     sensors[RIGHT] =    (analogRead(5)>>4);  

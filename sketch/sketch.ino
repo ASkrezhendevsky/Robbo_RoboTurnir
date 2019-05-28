@@ -17,7 +17,8 @@
 //float Kp=3.0, Ki=4.3, Kd=2.6, Hz=1000; // <-- РАБОЧЕЕ!  // скор - 210, разр крона 7.3 в ***** проходит ступени, не проходит крутой поворот в пуктир
 //float Kp=2.9, Ki=4.0, Kd=2.0, Hz=1000;// <-- РАБОЧЕЕ!  // скор - 210, разр крона 7.3 в ***** проходит всё
 //float Kp=2.9, Ki=4.0, Kd=2.0, Hz=1000;// <-- РАБОЧЕЕ!  // скор - 255, разр крона < 7.3 в ***** проходит всё, экранирование на: Л св, СЛ фототранзистор, С св, Р развендены в стороны
-float Kp = 2.2, Ki = 3.8, Kd=2.0, Hz=1000; // ?????  
+//float Kp = 2.2, Ki = 3.8, Kd=2.0, Hz=1000; // ?????  
+float Kp=3.7, Ki=4.0, Kd=2.5, Hz=1000;// <-- РАБОЧЕЕ!  // скор - 255,
 int output_bits = 16;
 bool output_signed = true;
 FastPID myPID(Kp, Ki, Kd, Hz, output_bits, output_signed);
@@ -151,21 +152,21 @@ void loop()
     Serial.println(sensors[2]);//*/
     
     /*
-    sensorsRead(sensors);
-   // sensorsRead2(sensors, normalL, normalSL, normalS, normalSR, normalR);
+    //sensorsRead(sensors);
+    sensorsRead2(sensors, normalL, normalSL, normalS, normalSR, normalR);
     int feedback = sensorsFeedBack(sensors);
     Serial.print(" sensorsFeedBack = ");
     Serial.print(feedback);
     Serial.print(" L = ");
-    Serial.print(sensors[0]);
+    Serial.print(sensors[LEFT]);
     Serial.print(" SL = ");
-    Serial.print(sensors[1]);
+    Serial.print(sensors[S_LEFT]);
     Serial.print(" s = ");
-    Serial.print(sensors[2]);
+    Serial.print(sensors[SENTRAL]);
     Serial.print(" SR = ");
-    Serial.print(sensors[3]);
+    Serial.print(sensors[S_RIGHT]);
     Serial.print(" R = ");
-    Serial.print(sensors[4]);
+    Serial.print(sensors[RIGHT]);
     Serial.print(" myPID = ");
     Serial.println(myPID.step(MAX_ERR, feedback+MAX_ERR));
     //delay(100);//*/
@@ -232,7 +233,7 @@ byte moveCrossroad()
     {
         return STATE_LINE;
     }
-    setMotorPWMPID(NORMAL_SPEED,(myPID.step(MAX_ERR, MAX_ERR))); 
+    setMotorPWM(NORMAL_SPEED,NORMAL_SPEED); 
     return STATE_CROSSROAD;
 }
 
