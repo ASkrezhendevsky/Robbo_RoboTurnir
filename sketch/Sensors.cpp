@@ -3,8 +3,46 @@
 
 int sensorsFeedBack(byte* sensors)
 {
-
-  if(sensors[SENTRAL] >= 10 && sensors[LEFT] < 30 && sensors[RIGHT] < 30)
+  int n = 9;//занчение центрального при котором на боковом появляеться 64
+  if(sensors[SENTRAL] >= n && sensors[LEFT] < 30 && sensors[RIGHT] < 30)
+  {    
+      Serial.print(1);
+      return -sensors[S_RIGHT]+sensors[S_LEFT];
+  }
+  
+  if(sensors[LEFT] < 30 && sensors[RIGHT] < 30)
+  {
+      if(sensors[S_RIGHT] < sensors[S_LEFT])
+      {
+        
+          Serial.print(2);
+          return MAX_SENS_VAL +  MAX_SENS_VAL + sensors[S_RIGHT] - sensors[S_LEFT];
+        
+      }
+      else
+      {
+        
+          Serial.print(3);
+          return -MAX_SENS_VAL - MAX_SENS_VAL + sensors[S_RIGHT] - sensors[S_LEFT];
+        
+      }
+  }
+  if(sensors[RIGHT] < sensors[LEFT])
+  {
+    
+      Serial.print(4);
+      return MAX_SENS_VAL -sensors[RIGHT] +   sensors[LEFT];
+    
+  }
+  else
+  {
+    
+      Serial.print(5);
+      return -MAX_SENS_VAL -sensors[RIGHT] +   sensors[LEFT];
+    
+  }
+/*
+  if(sensors[SENTRAL] >= 9 && sensors[LEFT] < 30 && sensors[RIGHT] < 30)
   {    
       Serial.print(1);
       return -sensors[S_RIGHT]+sensors[S_LEFT];
@@ -39,48 +77,7 @@ int sensorsFeedBack(byte* sensors)
       Serial.print(5);
       return -MAX_SENS_VAL -sensors[RIGHT] +   sensors[LEFT];
     
-  }
-  //return -sensors[RIGHT] +   sensors[LEFT];
-  
-  
- /*
-  if(sensors[SENTRAL] >= 170 && sensors[LEFT] < DARK_GRAY && sensors[RIGHT] < DARK_GRAY)
-  {    
-      return -sensors[S_RIGHT]+sensors[S_LEFT];
-  }
- 
-  int lSum = (sensors[RIGHT] + sensors[S_RIGHT]);
-  int rSum = (sensors[S_LEFT] + sensors[LEFT]);
-  if(rSum > lSum)
-  {
-      return MAX_SENS_VAL + rSum - lSum;
-  }
-  else
-  {
-      return -MAX_SENS_VAL + rSum - lSum;
-  }*/
-  
-  
-  /*
-  return -sensors[S_RIGHT]+sensors[LEFT];//*/
-
-  /*
-	if(sensors[SENTRAL] >= GRAY && sensors[S_LEFT] < DARK_GRAY && sensors[S_RIGHT] < DARK_GRAY)
-	{    
-      return -sensors[S_RIGHT]+sensors[LEFT];
-	}
-	else
-	{
-      if(sensors[S_RIGHT] < sensors[S_LEFT])
-      {
-          return MAX_SENS_VAL +  MAX_SENS_VAL +sensors[S_RIGHT] - sensors[S_LEFT];
-      }
-      else
-      {
-          return -MAX_SENS_VAL- MAX_SENS_VAL+ sensors[S_RIGHT] - sensors[S_LEFT];
-      }
-	}//*/
-  
+  } */
 }
 
 void sensorsRead(byte* sensors)
@@ -94,7 +91,7 @@ void sensorsRead(byte* sensors)
 
 void sensorsRead2(byte* sensors,byte* normalL,byte* normalSL,byte* normalS,byte* normalSR,byte* normalR)
 {      
-    sensors[LEFT] =       getNormal(normalL,(analogRead(1)>>4));        
+    sensors[LEFT] =       getNormal(normalL,(analogRead(1)>>4)); 
     sensors[S_LEFT] =     getNormal(normalSL,(analogRead(2)>>4));         
     sensors[SENTRAL] =    getNormal(normalS,(analogRead(3)>>4));  
     sensors[S_RIGHT] =    getNormal(normalSR,(analogRead(4)>>4));  
@@ -135,7 +132,7 @@ bool isAllSensorsWhite(byte* sensors)
   byte i; 
   for(i = 0;i < MAX_SENSORS;i++)
   {
-      if(sensors[i] >= BRIGHT_GRAY)
+      if(sensors[i] >= 20)
       {
           return false;
       }
@@ -149,7 +146,7 @@ bool isAllSensorsBlack(byte* sensors)
 	byte i = 0; 
   for(i = 0;i < MAX_SENSORS;i++)
   {
-      if(sensors[i] <= BLACK)
+      if(sensors[i] <= 30)
       {
           return false;
       }

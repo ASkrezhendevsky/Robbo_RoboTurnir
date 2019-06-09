@@ -6,7 +6,7 @@
 #define MOTOR_RIGHT_DIR		6	
 
 
-#define FORWARD	    LOW  //для более осмысленного переключения между направлениями движения, Пример: digitalWrite(MOTOR_LEFT_DIR,FORWARD); //установка левого мотора на движение в перёд
+#define FORWARD	    LOW  
 #define BACKWARD	  HIGH
 
 /*

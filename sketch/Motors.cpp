@@ -1,3 +1,4 @@
+
 #include <Arduino.h>
 #include "Motors.h"
 
@@ -35,15 +36,14 @@ void setMotorBreakR()
     digitalWrite(MOTOR_RIGHT_POW,HIGH);
 }
 
-void setMotorPWMPID(int Power,int PID)
+void setMotorPWMPID(int Power,int pid)
 {
-    int left = Power-PID;
-    int right = Power+PID;
-
+    int left = Power - pid;
+    int right = Power + pid;
+    
     if(left <= 0)
     {
         setMotorBreakL();
-       // left = 255;
     }
     else
     {
@@ -58,7 +58,6 @@ void setMotorPWMPID(int Power,int PID)
     if(right <= 0)
     {        
         setMotorBreakR();
-       // right = 255;
     } 
     else
     {
@@ -69,5 +68,4 @@ void setMotorPWMPID(int Power,int PID)
         }
         analogWrite(MOTOR_RIGHT_POW,right);
     }
-   // setMotorPWM(left, right);
 }
