@@ -12,7 +12,7 @@
 #define STATE_STEPS       2 //движение по ступенткам
 #define STATE_CROSSROAD   3 //движение по перекрёстку
 #define STATE_FINDING     4 //поиск ступенек
-#define STATE_TEST     5 //
+#define STATE_TEST        5 //
 
 #define BTN_LONG          0  //
 #define BTN_SHORT         1 //
